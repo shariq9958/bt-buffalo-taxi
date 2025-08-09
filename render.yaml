@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: buffalo-taxi
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: |
+      cd backend/frontend && npm install && npm run build
+      cd ..
+      npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
