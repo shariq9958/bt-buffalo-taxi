@@ -1,0 +1,116 @@
+.booking-page-container {
+  padding: 4rem 2rem;
+  background-color: #f7fafc; /* Off-white from theme */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+}
+
+.booking-form-content {
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 8px;
+  max-width: 650px;
+  width: 100%;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.booking-form-content h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #1a202c; /* Charcoal from theme */
+}
+
+.booking-form-content form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.booking-form-content .form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-form-content .form-group.form-group-half {
+    width: calc(50% - 0.75rem);
+}
+
+.booking-form-content .form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.booking-form-content .form-group input,
+.booking-form-content .form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.booking-form-content .form-group input:focus,
+.booking-form-content .form-group textarea:focus {
+    outline: none;
+    border-color: #c5a47e; /* Gold from theme */
+}
+
+.booking-form-content .form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.booking-form-content .btn-submit {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #c5a47e; /* Gold from theme */
+  color: #1a202c; /* Charcoal from theme */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.booking-form-content .btn-submit:hover {
+  background-color: #b38e6b;
+}
+
+.form-status {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.form-status:not(:empty) {
+    border: 1px solid transparent;
+}
+
+.form-status[class*="Error"] {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.form-status:not([class*="Error"]) {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+@media (max-width: 600px) {
+    .booking-form-content .form-group.form-group-half {
+        width: 100%;
+    }
+} 

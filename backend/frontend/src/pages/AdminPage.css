@@ -1,0 +1,122 @@
+/* Admin Login Page Styles */
+.admin-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f7fafc;
+}
+
+.admin-login-box {
+    padding: 2.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.admin-login-box h2 {
+    margin-bottom: 1.5rem;
+    color: #1a202c;
+}
+
+.admin-login-box .admin-form-group {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.admin-login-box label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.admin-login-box input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+}
+
+.admin-login-box button {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #c5a47e;
+    color: #1a202c;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-login-box button:hover {
+    background-color: #b38e6b;
+}
+
+.login-error {
+    color: #e53e3e;
+    margin-top: 1rem;
+}
+
+/* Admin Page (Dashboard) Styles */
+.admin-page-container {
+    padding: 2rem;
+}
+
+.admin-page-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #1a202c;
+}
+
+.bookings-table-container {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+thead {
+    background-color: #f7fafc;
+}
+
+th {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #4a5568;
+    text-transform: uppercase;
+}
+
+tbody tr:hover {
+    background-color: #f7fafc;
+}
+
+td {
+    font-size: 0.9rem;
+    color: #2d3748;
+}
+
+.error-message {
+    color: #e53e3e;
+    text-align: center;
+    padding: 1rem;
+    background-color: #fed7d7;
+    border: 1px solid #fbb6ce;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+} 

@@ -1,0 +1,134 @@
+/* General Container for the Border News Page */
+.border-news-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+/* Page Header Styling */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.page-header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #1a237e; /* Dark blue */
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* Main Content Area */
+.news-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+/* Individual Article Styling */
+.news-article {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.news-image {
+    width: 40%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.news-text {
+    width: 60%;
+}
+
+.news-text h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #c62828; /* Red accent */
+}
+
+.article-meta {
+    font-size: 0.9rem;
+    color: #757575;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+.news-text p, .news-text ul {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.news-text ul {
+    list-style-position: inside;
+    padding-left: 0;
+}
+
+.news-text ul li {
+    margin-bottom: 0.75rem;
+}
+
+.news-text ul li::marker {
+    color: #c62828;
+}
+
+/* Alternate Layout for every other article */
+.news-article.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .news-article, .news-article.reverse {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .news-image {
+        width: 100%;
+        max-height: 300px;
+        margin-bottom: 1.5rem;
+    }
+
+    .news-text {
+        width: 100%;
+    }
+
+    .news-text h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .border-news-container {
+        padding: 1rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .news-article {
+        padding: 1.5rem;
+    }
+} 

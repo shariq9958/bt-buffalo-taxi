@@ -1,0 +1,71 @@
+.our-team-page {
+    padding-bottom: 2rem;
+}
+
+/* Re-using page-header style */
+.our-team-page .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 1rem;
+    padding-bottom: 2.5rem;
+    background-color: #f4f4f4;
+}
+
+.our-team-page .page-header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #1a237e;
+    margin-bottom: 0.5rem;
+}
+
+.our-team-page .page-header p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* New intro section */
+.team-intro-section {
+    max-width: 900px;
+    margin: -1.5rem auto 3rem auto; /* Pull it up slightly over the header bottom */
+    background-color: #fff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.team-intro-section h2 {
+    font-size: 2.2rem;
+    color: #c62828;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.team-intro-section p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444;
+}
+
+/* Ensure the existing OurTeam component has enough space */
+.our-team-page .our-team {
+    margin-top: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .team-intro-section {
+        margin: 1rem;
+        padding: 2rem;
+    }
+
+    .team-intro-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .our-team-page .page-header h1 {
+        font-size: 2.2rem;
+    }
+} 

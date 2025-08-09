@@ -1,0 +1,107 @@
+/* Main page container */
+.booking-ports-page {
+    padding-bottom: 3rem;
+}
+
+/* Re-using page-header style */
+.booking-ports-page .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.booking-ports-page .page-header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #1a237e;
+    margin-bottom: 0.5rem;
+}
+
+.booking-ports-page .page-header p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* Grid container for the port cards */
+.ports-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Individual port card styling */
+.port-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.port-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.port-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.port-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allows the content to fill the card */
+}
+
+.port-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #c62828;
+    margin-bottom: 0.75rem;
+}
+
+.port-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 1.5rem;
+    flex-grow: 1; /* Pushes the button to the bottom */
+}
+
+.btn-book-port {
+    display: inline-block;
+    background-color: #ff6f00; /* Bright orange */
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    align-self: flex-start; /* Aligns button to the left */
+}
+
+.btn-book-port:hover {
+    background-color: #e65100; /* Darker orange */
+    color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ports-container {
+        padding: 0 1rem;
+    }
+
+    .booking-ports-page .page-header h1 {
+        font-size: 2.2rem;
+    }
+} 
