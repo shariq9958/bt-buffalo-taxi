@@ -4,136 +4,120 @@ import './FareEstimatorPage.css';
 const FareEstimatorPage = () => {
     const [pickup, setPickup] = useState('');
     const [dropoff, setDropoff] = useState('');
-    const [vehicleType, setVehicleType] = useState('standard');
-    const [passengers, setPassengers] = useState(1);
-    const [luggage, setLuggage] = useState(0);
-    const [hasPets, setHasPets] = useState('No');
-    const [childSeats, setChildSeats] = useState(0);
-    const [waitingTime, setWaitingTime] = useState(0);
+    const [vehicleType, setVehicleType] = useState('sedan');
+    const [returnTrip, setReturnTrip] = useState(false);
     const [estimatedFare, setEstimatedFare] = useState(null);
+
+    const fixedFares = [
+        { from: 'Niagara Falls, ON', price: 90 },
+        { from: 'Toronto Pearson (Niagara, New York)', price: 75 },
+        { from: 'Downtown Buffalo - Niagara Falls NY', price: 55 },
+        { from: 'Downtown Buffalo - ON', price: 75 },
+        { from: 'Buffalo Airport - Toronto Pearson', price: 280 }
+    ];
+
+    const vehicleSurcharge = {
+        sedan: 0,
+        suv: 20, // example
+        van: 40  // example
+    };
+
+    const calculateFare = () => {
+        let fare = null;
+
+        // 1️⃣ Check fixed fare routes
+        const fixedMatch = fixedFares.find(
+            route =>
+                (pickup.toLowerCase().includes(route.from.toLowerCase()) ||
+                 dropoff.toLowerCase().includes(route.from.toLowerCase()))
+        );
+
+        if (fixedMatch) {
+            fare = fixedMatch.price;
+        } else {
+            // 2️⃣ Apply per-mile logic (placeholder distance)
+            // In real app, replace with Google Maps API distance
+            const assumedDistance = 10; // example distance in miles
+
+            if (assumedDistance < 5) {
+                fare = 20;
+            } else {
+                fare = 12 + (assumedDistance * 3);
+            }
+        }
+
+        // 3️⃣ Vehicle surcharge
+        fare += vehicleSurcharge[vehicleType] || 0;
+
+        // 4️⃣ Return trip multiplier
+        if (returnTrip) {
+            fare *= 2;
+        }
+
+        setEstimatedFare(fare.toFixed(2));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        // --- Fare Calculation Logic ---
-        let fare = 2.50; // Base fare
-        
-        // Vehicle type
-        if (vehicleType === 'luxury') fare += 20;
-
-        // Simplified distance calculation (for demonstration)
-        // In a real app, you would use a service like Google Maps API
-        const distance = (pickup && dropoff) ? 25 : 0; // Assume 25 miles if locations are entered
-        fare += distance * 2.25; // Per-mile charge
-
-        // Passengers & Luggage (example logic)
-        if (passengers > 4) fare += (passengers - 4) * 5; // Extra charge for more passengers
-        if (luggage > 2) fare += (luggage - 2) * 2; // Extra charge for more luggage
-
-        // Special Needs
-        if (hasPets === 'Yes') fare += 10; // Pet fee
-        fare += childSeats * 5; // Child seat fee
-
-        // Waiting Time
-        fare += waitingTime * 0.50 * 60; // Assuming $30/hr, so $0.50/min
-
-        setEstimatedFare(fare.toFixed(2));
+        calculateFare();
     };
 
     return (
         <div className="fare-estimator-container">
             <div className="fare-estimator-content">
-                <h2>Buffalo Airport Taxi Fare Estimator</h2>
+                <h2>Buffalo Taxi Fare Estimator</h2>
                 <p>Enter your pickup and drop-off details to get an approximate fare estimate.</p>
 
                 <form onSubmit={handleSubmit}>
-                    <fieldset>
-                        <legend>LOCATION DETAILS</legend>
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label>Pick-Up Location</label>
-                                <input type="text" value={pickup} onChange={(e) => setPickup(e.target.value)} placeholder="Buffalo Airport or your address" />
-                            </div>
-                            <div className="form-group">
-                                <label>Drop-Off Location</label>
-                                <input type="text" value={dropoff} onChange={(e) => setDropoff(e.target.value)} placeholder="Niagara Falls, Toronto..." />
-                            </div>
+                    <div className="form-row">
+                        <div className="form-group">
+                            <label>Pick-Up Location</label>
+                            <input
+                                type="text"
+                                value={pickup}
+                                onChange={(e) => setPickup(e.target.value)}
+                                placeholder="Enter pickup address"
+                            />
+                            {pickup && (
+                                <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(pickup)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    View on Google Maps
+                                </a>
+                            )}
                         </div>
-                        <div className="form-check-group">
-                            <input type="checkbox" id="useAirportPickup" />
-                            <label htmlFor="useAirportPickup">Use This For BUF Airport PickUp: 4200 Genesee St, Buffalo, NY 14225</label>
+                        <div className="form-group">
+                            <label>Drop-Off Location</label>
+                            <input
+                                type="text"
+                                value={dropoff}
+                                onChange={(e) => setDropoff(e.target.value)}
+                                placeholder="Enter drop-off address"
+                            />
                         </div>
-                        <div className="form-check-group">
-                            <input type="checkbox" id="useAirportDropoff" />
-                            <label htmlFor="useAirportDropoff">Use This For BUF Airport DropOff: 4200 Genesee St, Buffalo, NY 14225</label>
-                        </div>
-                    </fieldset>
+                    </div>
 
-                    <fieldset>
-                        <legend>VEHICLE & PASSENGERS</legend>
-                        <div className="form-row">
-                             <div className="form-group">
-                                <label>Vehicle Type</label>
-                                <div className="radio-group">
-                                    <input type="radio" id="standard" name="vehicleType" value="standard" checked={vehicleType === 'standard'} onChange={(e) => setVehicleType(e.target.value)} />
-                                    <label htmlFor="standard">Standard</label>
-                                    <input type="radio" id="luxury" name="vehicleType" value="luxury" checked={vehicleType === 'luxury'} onChange={(e) => setVehicleType(e.target.value)} />
-                                    <label htmlFor="luxury">Luxury (+$20)</label>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label>Passengers</label>
-                                <input type="number" min="1" value={passengers} onChange={(e) => setPassengers(e.target.value)} />
-                            </div>
-                        </div>
-                         <div className="form-row">
-                            <div className="form-group">
-                                <label>Luggage</label>
-                                <input type="number" min="0" value={luggage} onChange={(e) => setLuggage(e.target.value)} />
-                            </div>
-                        </div>
-                    </fieldset>
+                    <div className="form-group">
+                        <label>Vehicle Type</label>
+                        <select value={vehicleType} onChange={(e) => setVehicleType(e.target.value)}>
+                            <option value="sedan">Sedan (up to 4 passengers)</option>
+                            <option value="suv">Spacious SUV (up to 5 passengers)</option>
+                            <option value="van">Van (up to 7 passengers)</option>
+                        </select>
+                    </div>
 
-                    <fieldset>
-                        <legend>SPECIAL NEEDS</legend>
-                         <div className="form-row">
-                            <div className="form-group">
-                                <label>Traveling with pets?</label>
-                                 <div className="radio-group">
-                                    <input type="radio" id="petsYes" name="pets" value="Yes" checked={hasPets === 'Yes'} onChange={(e) => setHasPets(e.target.value)} />
-                                    <label htmlFor="petsYes">Yes</label>
-                                    <input type="radio" id="petsNo" name="pets" value="No" checked={hasPets === 'No'} onChange={(e) => setHasPets(e.target.value)} />
-                                    <label htmlFor="petsNo">No</label>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label>Child Seats</label>
-                                <input type="number" min="0" value={childSeats} onChange={(e) => setChildSeats(e.target.value)} />
-                            </div>
-                        </div>
-                    </fieldset>
+                    <div className="form-check-group">
+                        <input
+                            type="checkbox"
+                            id="returnTrip"
+                            checked={returnTrip}
+                            onChange={(e) => setReturnTrip(e.target.checked)}
+                        />
+                        <label htmlFor="returnTrip">Add Return Pickup</label>
+                    </div>
 
-                     <fieldset>
-                        <legend>WAITING TIME</legend>
-                         <div className="form-row">
-                            <div className="form-group">
-                                <label>Waiting Time Location</label>
-                                 <div className="radio-group">
-                                    <input type="radio" id="waitNone" name="waitLocation" value="None" defaultChecked />
-                                    <label htmlFor="waitNone">None</label>
-                                    <input type="radio" id="waitBorder" name="waitLocation" value="Border" />
-                                    <label htmlFor="waitBorder">Canadian Border</label>
-                                    <input type="radio" id="waitAirport" name="waitLocation" value="Airport" />
-                                    <label htmlFor="waitAirport">Airport</label>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label>Waiting Hours (if any)</label>
-                                <input type="number" min="0" value={waitingTime} onChange={(e) => setWaitingTime(e.target.value)} />
-                            </div>
-                        </div>
-                    </fieldset>
-                    
                     <button type="submit">Estimate Fare</button>
                 </form>
 
@@ -148,4 +132,4 @@ const FareEstimatorPage = () => {
     );
 };
 
-export default FareEstimatorPage; 
+export default FareEstimatorPage;
