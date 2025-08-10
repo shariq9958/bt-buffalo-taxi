@@ -56,6 +56,7 @@ const checkAdminAuth = (req, res, next) => {
 };
 
 // Admin route to get bookings
+// Admin route to get bookings
 app.get('/api/admin/bookings', checkAdminAuth, async (req, res) => {
   try {
     const allBookings = await db.query("SELECT * FROM bookings ORDER BY created_at DESC");
@@ -65,10 +66,14 @@ app.get('/api/admin/bookings', checkAdminAuth, async (req, res) => {
       data: allBookings.rows,
     });
   } catch (err) {
-    console.error('DATABASE ERROR (Admin):', err.message);
-    res.status(500).json({ error: 'An error occurred while fetching bookings.' });
+    console.error('DATABASE ERROR (Admin):', err); // <-- show full error object
+    res.status(500).json({ 
+      error: 'An error occurred while fetching bookings.',
+      details: err.message // send message to frontend for debugging
+    });
   }
 });
+
 
 // Chatbot endpoint
 app.post('/api/chat', handleChat);
