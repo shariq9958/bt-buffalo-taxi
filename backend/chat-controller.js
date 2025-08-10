@@ -2,90 +2,57 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // backend/controllers/chatController.js
 
-// =======================
-// Knowledge Base
-// =======================
+// Simple keyword-based chatbot for BT Buffalo Airport Taxi
+
 const knowledgeBase = [
-  // 👋 Greetings & Casual
-  { keywords: ["hi", "hello", "hey", "good morning", "good evening"], answer: "Hello! 👋 How can I assist you today?" },
-  { keywords: ["how are you"], answer: "I’m great, thanks for asking! How can I help with your travel today?" },
-  { keywords: ["sorry"], answer: "No worries at all! 😊 How can I help you now?" },
-  { keywords: ["thank you", "thanks", "thx"], answer: "You’re welcome! 🚖" },
+  // Greetings & polite responses
+  { keywords: ['hi', 'hello', 'hey'], reply: 'Hello! 👋 Welcome to BT Buffalo Airport Taxi. How can I help you today?' },
+  { keywords: ['good morning', 'good afternoon', 'good evening'], reply: 'Hello! How can I assist you with your taxi needs today?' },
+  { keywords: ['thanks', 'thank you'], reply: 'You’re very welcome! 😊' },
+  { keywords: ['sorry'], reply: 'No problem at all. How can I assist you now?' },
 
-  // 📞 Contact Info
-  { keywords: ["phone", "hotline", "call"], answer: "Hotline Phone: +1 (716) 951-6256" },
-  { keywords: ["email", "mail"], answer: "Email us at btbuffallotaxi@gmail.com" },
-  { keywords: ["fax"], answer: "Fax: +1 (716) 951-6256" },
-  { keywords: ["location", "where are you", "address"], answer: "We are based at Buffalo Airport, NY." },
+  // Contact details
+  { keywords: ['phone', 'call', 'contact', 'number'], reply: '📞 Hotline: +1 (716) 951-6256\n📧 Email: btbuffallotaxi@gmail.com\n📍 Location: Buffalo Airport\nOpen 24/7' },
+  { keywords: ['email'], reply: 'Our email is btbuffallotaxi@gmail.com' },
 
-  // 🕒 Hours & Service Availability
-  { keywords: ["hours", "working time", "open", "availability"], answer: "We operate 24/7 — day or night, we’ve got you covered." },
+  // Services & fares
+  { keywords: ['niagara falls on'], reply: 'Niagara Falls, ON – $90 flat rate.' },
+  { keywords: ['toronto pearson niagara new york'], reply: 'Toronto Pearson (Niagara, New York) – $75 flat rate.' },
+  { keywords: ['downtown buffalo niagara falls ny'], reply: 'Downtown Buffalo → Niagara Falls NY – $55 flat rate.' },
+  { keywords: ['downtown on'], reply: 'Downtown → Niagara Falls, ON – $75 flat rate.' },
+  { keywords: ['buffalo airport toronto pearson'], reply: 'Buffalo Airport → Toronto Pearson – $280 flat rate.' },
 
-  // ✈️ Core Services
-  { keywords: ["airport transfer", "airport pickup", "airport drop"], answer: "We offer reliable Buffalo Niagara International Airport (BUF) pickups and drop-offs." },
-  { keywords: ["niagara falls tour", "tour"], answer: "We provide comfortable taxi tours to Niagara Falls — American and Canadian sides." },
-  { keywords: ["canada", "cross border", "toronto", "mississauga"], answer: "We specialize in smooth cross-border transportation to Toronto, Mississauga, and more." },
-  { keywords: ["corporate travel", "business"], answer: "We offer professional and discreet service for corporate and business travel." },
+  // Vehicles
+  { keywords: ['sedan'], reply: '🚗 Sedan – up to 4 passengers.' },
+  { keywords: ['suv'], reply: '🚙 Spacious SUV – up to 5 passengers.' },
+  { keywords: ['van'], reply: '🚐 Van – up to 7 passengers.' },
 
-  // 💲 Flat-Rate Destinations
-  { keywords: ["niagara falls on"], answer: "Niagara Falls, ON – $90" },
-  { keywords: ["toronto pearson", "niagara new york"], answer: "Toronto Pearson (via Niagara, New York) – $75" },
-  { keywords: ["downtown buffalo", "niagara falls ny"], answer: "Downtown Buffalo to Niagara Falls, NY – $55" },
-  { keywords: ["downtown buffalo", "niagara falls on"], answer: "Downtown Buffalo to Niagara Falls, ON – $75" },
-  { keywords: ["buffalo airport", "toronto pearson"], answer: "Buffalo Airport to Toronto Pearson – $280" },
+  // Pricing rules
+  { keywords: ['fare', 'price', 'per mile'], reply: 'Per mile: $4\nUnder 5 miles: $20\nStarting: $12 + $3 per mile' },
 
-  // 🚗 Vehicles
-  { keywords: ["sedan"], answer: "Standard Sedan — up to 3 passengers and luggage." },
-  { keywords: ["suv"], answer: "Spacious SUV — seats up to 6 passengers with extra luggage space." },
-  { keywords: ["van"], answer: "Large Van — up to 7 passengers, perfect for groups." },
+  // Availability
+  { keywords: ['open', 'hours', '24/7', 'working time'], reply: 'We operate 24 hours a day, 7 days a week! 🚖' },
 
-  // 📍 Booking & Pickup
-  { keywords: ["pickup address"], answer: "You can share your pickup location here: https://maps.google.com/" },
-  { keywords: ["return pickup"], answer: "We also offer a return pickup option — just provide date & time." },
+  // Cross-border
+  { keywords: ['canada', 'border', 'toronto', 'mississauga'], reply: 'We provide cross-border taxi service to Toronto, Mississauga, and other Canadian destinations. Passport required.' },
 
-  // 🧮 Fare Estimation
-  { keywords: ["fare estimate", "estimate", "miles"], answer: "Provide your trip distance in miles, e.g., 'Estimate 10 miles'." },
-
-  // 🏆 Company Intro
-  { keywords: ["about", "who are you", "company"], answer: "BT Buffalo Airport Taxi — your trusted partner for airport transfers, Niagara Falls tours, and cross-border travel." }
+  // Booking
+  { keywords: ['book', 'booking', 'reserve'], reply: 'You can book online or call our hotline at +1 (716) 951-6256. 🚕' }
 ];
 
-// =======================
-// Fare Calculation Logic
-// =======================
-const fareEstimator = (miles) => {
-  if (miles < 5) return "$20 (under 5 miles)";
-  return `$${12 + (miles * 3)} (starting $12 + $3 per mile)`;
-};
+// Main chatbot function
+function chatBotReply(req, res) {
+  const userMessage = (req.body.message || '').toLowerCase();
 
-// =======================
-// Knowledge Base Search
-// =======================
-function searchKnowledgeBase(message) {
-  const lowerMsg = message.toLowerCase();
-
-  // Check for mileage estimates
-  const milesMatch = lowerMsg.match(/(\d+)\s*miles?/);
-  if (milesMatch) {
-    const miles = parseInt(milesMatch[1]);
-    return `Estimated fare for ${miles} miles: ${fareEstimator(miles)}`;
-  }
-
-  // Search KB
-  for (const entry of knowledgeBase) {
-    if (entry.keywords.some(keyword => lowerMsg.includes(keyword))) {
-      return entry.answer;
+  // Try to find a matching reply
+  for (let entry of knowledgeBase) {
+    if (entry.keywords.some(keyword => userMessage.includes(keyword))) {
+      return res.json({ reply: entry.reply });
     }
   }
 
-  return "Hi! I’m your BT Buffalo Airport assistant. I can help with fares, bookings, pickup info, cross-border trips, and more.";
+  // Default reply if no match
+  return res.json({ reply: 'I’m here to help! You can ask about fares, booking, contact info, or destinations.' });
 }
 
-// =======================
-// Controller Function
-// =======================
-exports.chatBotReply = (req, res) => {
-  const userMessage = req.body.message || "";
-  const reply = searchKnowledgeBase(userMessage);
-  res.json({ reply });
-};
+module.exports = { chatBotReply };
