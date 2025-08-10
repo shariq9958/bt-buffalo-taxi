@@ -1,65 +1,104 @@
-.fare-estimator-container {
-  max-width: 600px;
-  margin: auto;
-  background: white;
-  padding: 2rem;
+/* Container */
+.fare-estimator-wrapper {
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.fare-estimator-card {
+  width: 100%;
+  max-width: 880px;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.75rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
 }
 
-.fare-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+/* Headings */
+.fare-estimator-card h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.9rem;
+  text-align: center;
+}
+.fare-estimator-card .muted {
+  text-align: center;
+  color: #666;
+  margin-bottom: 1rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
+/* Form layout */
+.fare-form { display: flex; flex-direction: column; gap: 0.75rem; }
 
-.form-group label {
-  font-weight: bold;
-  margin-bottom: 0.3rem;
-}
-
-.form-group input,
-.form-group select {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
+.label { font-weight: 600; color: #333; margin-bottom: 0.25rem; font-size: 0.95rem; }
+.input {
+  width: 100%;
+  padding: 10px 12px;
   border-radius: 8px;
+  border: 1px solid #d0d6db;
+  font-size: 1rem;
+  box-sizing: border-box;
 }
 
-.map-link {
-  font-size: 0.85rem;
-  margin-top: 0.2rem;
-  color: #007bff;
+/* two columns */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
 }
 
-.form-check {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+/* small link under input */
+.map-link { display: inline-block; margin-top: 6px; color: #0077cc; font-size: 0.88rem; text-decoration: underline; }
 
-.estimate-btn {
-  padding: 0.75rem;
+/* inline styles */
+.inline-row { margin-top: 6px; }
+.inline { display: flex; align-items: center; gap: 8px; cursor: pointer; color: #333; }
+.inline input { width: 18px; height: 18px; }
+
+/* Buttons */
+.primary-btn {
   background: #c89b6d;
-  color: white;
+  color: #fff;
   border: none;
+  padding: 10px 16px;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 8px;
+}
+.secondary-btn {
+  background: transparent;
+  border: 1px solid #c8c8c8;
+  color: #333;
+  padding: 10px 14px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.estimate-btn:hover {
-  background: #a8784d;
-}
-
-.fare-result {
-  margin-top: 1.5rem;
+/* Result box */
+.result-box {
+  margin-top: 1rem;
   padding: 1rem;
-  background: #f8f9fa;
   border-radius: 8px;
-  text-align: center;
+  background: #f8fafb;
+  border-left: 4px solid #c89b6d;
+}
+.breakdown { list-style: none; padding: 0; margin: 0; }
+.breakdown li { padding: 6px 0; border-bottom: 1px dashed rgba(0,0,0,0.04); }
+.breakdown li.total { font-size: 1.1rem; font-weight: 800; color: #111; }
+
+.actions { margin-top: 10px; display:flex; gap: 12px; align-items:center; }
+.muted-link { color: #666; font-size: 0.95rem; text-decoration: none; }
+
+/* Error */
+.error-box { margin-top: 8px; background: #fff0f0; color: #8b1a1a; padding: 10px; border-radius: 8px; border: 1px solid #f1c3c3; }
+
+/* small note */
+.small-muted { margin-top: 10px; font-size: 0.9rem; color: #666; text-align: center; }
+
+/* responsive */
+@media (max-width: 720px) {
+  .two-col { grid-template-columns: 1fr; }
+  .fare-estimator-card { padding: 1rem; border-radius: 10px; }
+  .actions { flex-direction: column; align-items: stretch; }
+  .primary-btn { width: 100%; }
 }
