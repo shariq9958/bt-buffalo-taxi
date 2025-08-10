@@ -1,21 +1,20 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// backend/controllers/chatController.js
+// backend/chat-controller.js
 
-// Simple keyword-based chatbot for BT Buffalo Airport Taxi
-
+// Knowledge base for BT Buffalo Airport Taxi
 const knowledgeBase = [
-  // Greetings & polite responses
+  // Greetings
   { keywords: ['hi', 'hello', 'hey'], reply: 'Hello! 👋 Welcome to BT Buffalo Airport Taxi. How can I help you today?' },
   { keywords: ['good morning', 'good afternoon', 'good evening'], reply: 'Hello! How can I assist you with your taxi needs today?' },
   { keywords: ['thanks', 'thank you'], reply: 'You’re very welcome! 😊' },
   { keywords: ['sorry'], reply: 'No problem at all. How can I assist you now?' },
 
-  // Contact details
+  // Contact info
   { keywords: ['phone', 'call', 'contact', 'number'], reply: '📞 Hotline: +1 (716) 951-6256\n📧 Email: btbuffallotaxi@gmail.com\n📍 Location: Buffalo Airport\nOpen 24/7' },
   { keywords: ['email'], reply: 'Our email is btbuffallotaxi@gmail.com' },
 
-  // Services & fares
+  // Fares
   { keywords: ['niagara falls on'], reply: 'Niagara Falls, ON – $90 flat rate.' },
   { keywords: ['toronto pearson niagara new york'], reply: 'Toronto Pearson (Niagara, New York) – $75 flat rate.' },
   { keywords: ['downtown buffalo niagara falls ny'], reply: 'Downtown Buffalo → Niagara Falls NY – $55 flat rate.' },
@@ -40,19 +39,19 @@ const knowledgeBase = [
   { keywords: ['book', 'booking', 'reserve'], reply: 'You can book online or call our hotline at +1 (716) 951-6256. 🚕' }
 ];
 
-// Main chatbot function
-function chatBotReply(req, res) {
+// Main handler function for chat
+function handleChat(req, res) {
   const userMessage = (req.body.message || '').toLowerCase();
 
-  // Try to find a matching reply
+  // Search in knowledge base
   for (let entry of knowledgeBase) {
     if (entry.keywords.some(keyword => userMessage.includes(keyword))) {
       return res.json({ reply: entry.reply });
     }
   }
 
-  // Default reply if no match
-  return res.json({ reply: 'I’m here to help! You can ask about fares, booking, contact info, or destinations.' });
+  // Default fallback
+  res.json({ reply: 'I’m here to help! You can ask about fares, booking, contact info, or destinations.' });
 }
 
-module.exports = { chatBotReply };
+module.exports = { handleChat };
