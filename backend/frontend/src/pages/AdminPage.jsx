@@ -24,8 +24,7 @@ const AdminPage = () => {
 
         const fetchBookings = async () => {
             try {
-                const response = await fetch('https://btbuffalotaxi.com/api/admin/bookings
-', {
+                const response = await fetch('https://btbuffalotaxi.com/api/admin/bookings', {
                     headers: {
                         // In a real app, you'd send a token (e.g., JWT)
                         'Authorization': 'admin123' 
