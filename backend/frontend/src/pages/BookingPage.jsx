@@ -27,7 +27,7 @@ const BookingPage = () => {
     setStatus('Submitting...');
 
     try {
-      const response = await fetch('http://localhost:3001/api/bookings', {
+      const response = await fetch('https://btbuffalotaxi.com/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
