@@ -1,9 +1,17 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// --- Create a Knowledge Base ---
-// I will populate this with information from your website.
-// This context helps the AI answer questions based ONLY on your site's data.
+// backend/controllers/chatController.js
+
+// =======================
+// Knowledge Base
+// =======================
 const knowledgeBase = [
+  // 👋 Greetings & Casual
+  { keywords: ["hi", "hello", "hey", "good morning", "good evening"], answer: "Hello! 👋 How can I assist you today?" },
+  { keywords: ["how are you"], answer: "I’m great, thanks for asking! How can I help with your travel today?" },
+  { keywords: ["sorry"], answer: "No worries at all! 😊 How can I help you now?" },
+  { keywords: ["thank you", "thanks", "thx"], answer: "You’re welcome! 🚖" },
+
   // 📞 Contact Info
   { keywords: ["phone", "hotline", "call"], answer: "Hotline Phone: +1 (716) 951-6256" },
   { keywords: ["email", "mail"], answer: "Email us at btbuffallotaxi@gmail.com" },
