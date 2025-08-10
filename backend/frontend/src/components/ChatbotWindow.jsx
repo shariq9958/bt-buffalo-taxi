@@ -8,6 +8,12 @@ const ChatbotWindow = ({ isOpen, onClose }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // ✅ Use dynamic base URL for local & production
+  const API_BASE_URL =
+    process.env.NODE_ENV === 'production'
+      ? 'https://btbuffalotaxi.com'
+      : 'http://localhost:3001';
+
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -17,7 +23,7 @@ const ChatbotWindow = ({ isOpen, onClose }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/chat', {
+      const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -80,4 +86,4 @@ const ChatbotWindow = ({ isOpen, onClose }) => {
   );
 };
 
-export default ChatbotWindow; 
+export default ChatbotWindow;
