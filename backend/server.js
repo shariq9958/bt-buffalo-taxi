@@ -3,6 +3,8 @@ const cors = require('cors');
 const path = require('path');
 const db = require('./db');
 const { handleChat } = require('./chat-controller');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -11,8 +13,17 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Serve frontend static files from /public (React build output)
+// Serve frontend static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Create Nodemailer transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER, // Gmail address
+    pass: process.env.EMAIL_PASS  // App password from Google
+  }
+});
 
 /* ===========================
    API ROUTES
@@ -27,6 +38,7 @@ app.post('/api/bookings', async (req, res) => {
       return res.status(400).json({ error: 'Please fill out all required fields.' });
     }
 
+    // 1️⃣ Save to Database
     const newBooking = await db.query(
       `INSERT INTO bookings 
        (name, phone, email, pickup_address, destination_address, booking_date, booking_time, message) 
@@ -35,13 +47,36 @@ app.post('/api/bookings', async (req, res) => {
       [name, phone, email, pickup, destination, date, time, message]
     );
 
+    // 2️⃣ Send Email Notification
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER, // Send to yourself
+      subject: '📅 New Booking Received',
+      text: `
+        New booking details:
+
+        Name: ${name}
+        Phone: ${phone}
+        Email: ${email}
+        Pickup: ${pickup}
+        Destination: ${destination}
+        Date: ${date}
+        Time: ${time}
+        Message: ${message || "N/A"}
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+
     res.status(201).json({
       status: 'success',
       data: { booking: newBooking.rows[0] },
+      message: 'Booking saved and email sent successfully!'
     });
+
   } catch (err) {
-    console.error('DATABASE ERROR:', err.message);
-    res.status(500).json({ error: 'An error occurred while communicating with the database.' });
+    console.error('ERROR:', err.message);
+    res.status(500).json({ error: 'An error occurred while processing your booking.' });
   }
 });
 
@@ -56,7 +91,6 @@ const checkAdminAuth = (req, res, next) => {
 };
 
 // Admin route to get bookings
-// Admin route to get bookings
 app.get('/api/admin/bookings', checkAdminAuth, async (req, res) => {
   try {
     const allBookings = await db.query("SELECT * FROM bookings ORDER BY created_at DESC");
@@ -66,22 +100,19 @@ app.get('/api/admin/bookings', checkAdminAuth, async (req, res) => {
       data: allBookings.rows,
     });
   } catch (err) {
-    console.error('DATABASE ERROR (Admin):', err); // <-- show full error object
+    console.error('DATABASE ERROR (Admin):', err);
     res.status(500).json({ 
       error: 'An error occurred while fetching bookings.',
-      details: err.message // send message to frontend for debugging
+      details: err.message
     });
   }
 });
 
-
 // Chatbot endpoint
 app.post('/api/chat', handleChat);
 
-/* ===========================
-   SPA Fallback (React Router)
-   =========================== */
-app.use( (req, res) => {
+// SPA Fallback
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
