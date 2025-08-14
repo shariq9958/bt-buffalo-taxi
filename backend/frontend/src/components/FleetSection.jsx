@@ -13,7 +13,7 @@ const FleetSection = () => {
     },
     {
       name: 'Spacious SUV',
-      description: 'Ideal for families or groups with extra luggage, seating up to 6 passengers.',
+      description: 'Ideal for families or groups with extra luggage, seating up to 5 passengers.',
       image: suvImg
     },
     {
