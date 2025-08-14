@@ -18,7 +18,7 @@ const FleetSection = () => {
     },
     {
       name: 'Large Van',
-      description: 'The best option for large groups or extensive luggage requirements.',
+      description: 'The best option for large groups(upto 7) or extensive luggage requirements.',
       image: vanImg
     }
   ];
