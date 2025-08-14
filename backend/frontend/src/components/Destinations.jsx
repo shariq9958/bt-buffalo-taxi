@@ -7,22 +7,22 @@ import downtownImg from '../assets/img3.jpeg';
 const Destinations = () => {
     const destinations = [
         {
-            name: 'Niagara Falls, ON',
+            name: 'Buffalo Airport to Niagara Falls, ON',
             price: '$90',
             image: niagaraImg
         },
         {
-            name: 'Toronto Pearson (Niagara,New York)',
+            name: 'Buffalo Airport to Toronto Pearson (Niagara,New York)',
             price: '$75',
             image: torontoImg
         },
         {
             name: 'Downtown Buffalo to Niagara fall NY ',
-            price: '$55',
+            price: '$60',
             image: downtownImg
         },
         {
-            name: 'Downtown to ON ',
+            name: 'Buffalo Downtown to Niagara fall ON ',
             price: '$75',
             image: downtownImg
         }
