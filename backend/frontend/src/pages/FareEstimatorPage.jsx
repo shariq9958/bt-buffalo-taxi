@@ -32,15 +32,15 @@ import "./FareEstimatorPage.css";
 
 const PRESET_ROUTES = [
   { id: "none", label: "— No preset — (use custom distance) ", price: null },
-  { id: "niagara_on", label: "Niagara Falls, ON", price: 90 },
-  { id: "toronto_pearson", label: "Toronto Pearson (Niagara, New York)", price: 75 },
-  { id: "downtown_to_niagara_ny", label: "Downtown Buffalo → Niagara Falls, NY", price: 55 },
-  { id: "downtown_to_on", label: "Downtown Buffalo → Niagara Falls, ON", price: 75 },
+  { id: "niagara_on", label: "Buffalo Airport to Niagara Falls ,ON", price: 90 },
+  { id: "toronto_pearson", label: "Buffalo Airport to Niagara Falls , New York (Toronto Pearson) ", price: 75 },
+  { id: "downtown_to_niagara_ny", label: "Downtown Buffalo to Niagara Falls ,NY", price: 60 },
+  { id: "downtown_to_on", label: "Buffalo downtown to Niagara Falls ON ", price: 75 },
   { id: "buf_airport_to_toronto", label: "Buffalo Airport → Toronto Pearson", price: 280 }
 ];
 
 const VEHICLE_INFO = {
-  sedan: { label: "Sedan (up to 4)", cap: 4, surcharge: 0 },
+  sedan: { label: "Sedan (up to 3)", cap: 4, surcharge: 0 },
   suv:   { label: "Spacious SUV (up to 5)", cap: 5, surcharge: 20 },
   van:   { label: "Van (up to 7)", cap: 7, surcharge: 40 }
 };
