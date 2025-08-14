@@ -40,7 +40,7 @@ const Hero = () => {
             </Slider>
             <div className="hero-content">
                 <div className="container">
-                     <h1>Your BT BUFFALO TAXI</h1>
+                     <h1> BT BUFFALO TAXI</h1>
                     <h3>Your Premier Taxi Service for Buffalo & Beyond</h3>
                     <p>Reliable, professional, and always on time. Book your ride to the airport, Niagara Falls, or across the border today!</p>
                     <Link to="/booking" className="btn-primary hero-book-btn">Book Now</Link>
