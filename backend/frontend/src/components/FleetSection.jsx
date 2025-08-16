@@ -1,7 +1,7 @@
 import React from 'react';
 
-import sedanImg from '../assets/car1.jpeg'; // Using airport image as placeholder
-import suvImg from '../assets/car4.jpeg'; // Using airport image as placeholder
+import sedanImg from '../assets/car11.jpg'; // Using airport image as placeholder
+import suvImg from '../assets/car22.jpg'; // Using airport image as placeholder
 import vanImg from '../assets/car2.jpeg'; // Using airport image as placeholder
 
 const FleetSection = () => {
