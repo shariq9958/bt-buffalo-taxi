@@ -22,7 +22,7 @@ const BookingConfidence = () => {
           <p>
             If you're looking for the most trusted Buffalo Airport Taxi service, you've just found it.
           </p>
-          <Link to="/booking" className="btn-secondary">Book Our Service today</Link>
+          
         </div>
       </div>
     </div>
