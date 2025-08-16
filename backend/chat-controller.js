@@ -1,7 +1,6 @@
 // backend/chat-controller.js
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// Initialize Gemini with API key from Render env
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // --- Knowledge Base ---
@@ -64,17 +63,19 @@ async function handleChat(req, res) {
     }
   }
 
-  // Fallback: use AI to interpret query
+  // Fallback: use AI to suggest the closest match
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const prompt = `
     You are a helpful assistant for BT Buffalo Airport Taxi.
-    The user asked: "${userMessage}".
-    Match their query to the closest knowledge base entry.
+    A customer asked: "${userMessage}".
+    Match their query to the closest entry in the knowledge base below.
+    Give a short, friendly, and **relevant** answer (not generic).
+    If it's a typo (like "niagra" instead of "niagara"), correct it and answer.
+    If no good match, reply with: "I’m here to help! You can ask about fares, booking, contact info, or destinations."
+
     Knowledge base:
     ${JSON.stringify(knowledgeBase, null, 2)}
-
-    If no match, reply: "I’m here to help! You can ask about fares, booking, contact info, or destinations."
     `;
 
     const result = await model.generateContent(prompt);
