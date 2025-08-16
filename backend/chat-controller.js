@@ -63,16 +63,17 @@ async function handleChat(req, res) {
     }
   }
 
-  // Fallback: use AI to suggest the closest match
+  // Fallback: use Gemini AI for fuzzy matching / typos
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // ✅ fixed model
     const prompt = `
     You are a helpful assistant for BT Buffalo Airport Taxi.
     A customer asked: "${userMessage}".
     Match their query to the closest entry in the knowledge base below.
-    Give a short, friendly, and **relevant** answer (not generic).
-    If it's a typo (like "niagra" instead of "niagara"), correct it and answer.
-    If no good match, reply with: "I’m here to help! You can ask about fares, booking, contact info, or destinations."
+    - Correct typos (e.g., "niagra" → "niagara").
+    - If a fare/destination is mentioned, give the closest matching fare.
+    - Answer naturally and conversationally, not by repeating the full JSON.
+    - If no good match, say: "I’m here to help! You can ask about fares, booking, contact info, or destinations."
 
     Knowledge base:
     ${JSON.stringify(knowledgeBase, null, 2)}
@@ -84,7 +85,9 @@ async function handleChat(req, res) {
     return res.json({ reply: aiReply });
   } catch (err) {
     console.error("AI error:", err);
-    res.json({ reply: 'I’m here to help! You can ask about fares, booking, contact info, or destinations.' });
+    res.json({
+      reply: 'I’m here to help! You can ask about fares, booking, contact info, or destinations.'
+    });
   }
 }
 
