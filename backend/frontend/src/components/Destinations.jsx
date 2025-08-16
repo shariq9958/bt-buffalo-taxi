@@ -12,17 +12,17 @@ const Destinations = () => {
             image: niagaraImg
         },
         {
-            name: 'Buffalo Airport to Toronto Pearson (Niagara,New York)',
+            name: 'Buffalo Airport to  Niagara falls, NY',
             price: '$75',
             image: torontoImg
         },
         {
-            name: 'Downtown Buffalo to Niagara fall NY ',
+            name: 'Downtown Buffalo to Niagara falls NY ',
             price: '$60',
             image: downtownImg
         },
         {
-            name: 'Buffalo Downtown to Niagara fall ON ',
+            name: 'Buffalo Downtown to Niagara falls ON ',
             price: '$75',
             image: downtownImg
         }
