@@ -10,13 +10,10 @@ const FloatingActionButton = () => {
   return (
     <div className={`fab-container ${isOpen ? 'open' : ''}`}>
       <div className="fab-menu">
-        <a href="#" className="fab-item" title="Chatbot">
-          <i className="fas fa-robot"></i>
-        </a>
-        <a href="https://wa.me/17162924425" className="fab-item" title="WhatsApp">
+        <a href="https://wa.me/17169516256" className="fab-item" title="WhatsApp">
           <i className="fab fa-whatsapp"></i>
         </a>
-        <a href="sms:17162924425" className="fab-item" title="SMS">
+        <a href="sms:+17169516256" className="fab-item" title="SMS">
           <i className="fas fa-sms"></i>
         </a>
         <a href="tel:17162924425" className="fab-item" title="Call">
