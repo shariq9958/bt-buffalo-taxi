@@ -43,7 +43,10 @@ const Hero = () => {
                      <h1> BT BUFFALO AIRPORT TAXI</h1>
                     <h3>Your Premier Taxi Service for Buffalo & Beyond</h3>
                     <p>Reliable, professional, and always on time. Book your ride to the airport, Niagara Falls, or across the border today!</p>
-                    <h4>Hot Line Phone</h4><p>+1 (716) 951-6256</p>
+                    <h4>Hot Line</h4>
+<a href="tel:+17169516256" className="btn-primary hero-call-btn">
+  📞 Call Now
+</a>
                     <Link to="/booking" className="btn-primary hero-book-btn">Book Now</Link>
                 </div>
             </div>
