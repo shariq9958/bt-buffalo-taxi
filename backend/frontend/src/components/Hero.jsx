@@ -46,7 +46,7 @@ const Hero = () => {
                     <h4>Hot Line</h4>
 <a href="tel:+17169516256" className="btn-primary hero-call-btn">
   📞 Call Now
-</a>
+</a>   <br />
                     <Link to="/booking" className="btn-primary hero-book-btn">Book Now</Link>
                 </div>
             </div>
