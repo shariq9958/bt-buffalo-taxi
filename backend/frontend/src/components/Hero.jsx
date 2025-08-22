@@ -49,6 +49,7 @@ const Hero = () => {
 </a>   <br />
                     
                 </div>
+                <Link to="/booking" className="btn-primary hero-book-btn">Book Now</Link>
             </div>
         </div>
     );
