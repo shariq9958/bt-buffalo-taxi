@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { handleChat } = require('./chat-controller');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
@@ -25,52 +26,52 @@ const transporter = nodemailer.createTransport({
 
 /* ===========================
    API ROUTES
-   =========================== */
+=========================== */
 
-// Booking form submission (📩 Only sends email)
+// Booking form submission - EMAIL ONLY (NO DATABASE)
 app.post('/api/bookings', async (req, res) => {
   try {
     const { name, phone, email, pickup, destination, date, time, message } = req.body;
 
-    // Basic validation
     if (!name || !phone || !email || !pickup || !destination || !date || !time) {
-      return res.status(400).json({ error: 'Please fill out all required fields.' });
+      return res.status(400).json({ 
+        error: 'Please fill out all required fields.' 
+      });
     }
 
-    // ✉️ Send Email Notification
+    // Send Email Notification
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER, // Send to your inbox
+      to: process.env.EMAIL_USER, // Send to yourself
       subject: '📅 New Booking Received',
-      text: `
-        New booking details:
+      text: `New booking details:
 
-        Name: ${name}
-        Phone: ${phone}
-        Email: ${email}
-        Pickup: ${pickup}
-        Destination: ${destination}
-        Date: ${date}
-        Time: ${time}
-        Message: ${message || "N/A"}
-      `
+Name: ${name}
+Phone: ${phone}
+Email: ${email}
+Pickup: ${pickup}
+Destination: ${destination}
+Date: ${date}
+Time: ${time}
+Message: ${message || "N/A"}`
     };
 
     await transporter.sendMail(mailOptions);
 
-    res.status(200).json({
+    res.status(201).json({ 
       status: 'success',
-      message: 'Booking details emailed successfully!'
+      message: 'Booking submitted successfully! We will contact you soon.' 
     });
 
   } catch (err) {
     console.error('EMAIL ERROR:', err.message);
-    res.status(500).json({ error: 'An error occurred while sending the email.' });
+    res.status(500).json({ 
+      error: 'An error occurred while processing your booking.' 
+    });
   }
 });
 
-// Chatbot endpoint (if you have it)
-const { handleChat } = require('./chat-controller');
+// Chatbot endpoint
 app.post('/api/chat', handleChat);
 
 // SPA Fallback
