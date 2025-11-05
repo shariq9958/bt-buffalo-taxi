@@ -38,25 +38,21 @@ app.post('/api/bookings', async (req, res) => {
       return res.status(400).json({ error: 'Please fill out all required fields.' });
     }
 
-    // 1️⃣ Try to save to Database (but ignore if DB fails)
-    try {
-      await db.query(
-        `INSERT INTO bookings 
-         (name, phone, email, pickup_address, destination_address, booking_date, booking_time, message)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [name, phone, email, pickup, destination, date, time, message]
-      );
-    } catch (dbErr) {
-      console.warn('⚠️ Database save failed (ignored):', dbErr.message);
-    }
+    // 1️⃣ Save to Database
+    const newBooking = await db.query(
+      `INSERT INTO bookings 
+        (name, phone, email, pickup_address, destination_address, booking_date, booking_time, message) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+       RETURNING *`,
+      [name, phone, email, pickup, destination, date, time, message]
+    );
 
-    // 2️⃣ Send Email Notification (always)
+    // 2️⃣ Send Email Notification
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER, // your own inbox
+      to: process.env.EMAIL_USER, // Send to yourself
       subject: '📅 New Booking Received',
-      text: `
-        New booking details:
+      text: `New booking details:
 
         Name: ${name}
         Phone: ${phone}
@@ -66,20 +62,19 @@ app.post('/api/bookings', async (req, res) => {
         Date: ${date}
         Time: ${time}
         Message: ${message || "N/A"}
-      `
-    };
+      `};
 
     await transporter.sendMail(mailOptions);
 
-    // 3️⃣ Always send success response to frontend
-    res.status(200).json({
+    res.status(201).json({
       status: 'success',
-      message: '✅ Booking email sent successfully!'
+      data: { booking: newBooking.rows[0] },
+      message: 'Booking saved and email sent successfully!'
     });
 
   } catch (err) {
-    console.error('❌ ERROR:', err.message);
-    res.status(500).json({ error: 'An error occurred while sending your booking email.' });
+    console.error('ERROR:', err.message);
+    res.status(500).json({ error: 'An error occurred while processing your booking.' });
   }
 });
 
@@ -93,7 +88,7 @@ const checkAdminAuth = (req, res, next) => {
   }
 };
 
-// Admin route to get bookings (if DB available)
+// Admin route to get bookings
 app.get('/api/admin/bookings', checkAdminAuth, async (req, res) => {
   try {
     const allBookings = await db.query("SELECT * FROM bookings ORDER BY created_at DESC");
@@ -103,11 +98,10 @@ app.get('/api/admin/bookings', checkAdminAuth, async (req, res) => {
       data: allBookings.rows,
     });
   } catch (err) {
-    console.error('⚠️ DATABASE ERROR (Admin):', err);
-    res.status(200).json({
-      status: 'warning',
-      message: '⚠️ Database not available, but system still working.',
-      data: []
+    console.error('DATABASE ERROR (Admin):', err);
+    res.status(500).json({ 
+      error: 'An error occurred while fetching bookings.',
+      details: err.message
     });
   }
 });
