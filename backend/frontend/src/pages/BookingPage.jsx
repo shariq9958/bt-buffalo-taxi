@@ -1,4 +1,4 @@
-```javascript
+
 import React, { useState } from 'react';
 import './BookingPage.css';
 
@@ -211,4 +211,4 @@ const BookingPage = () => {
 };
 
 export default BookingPage;
-```
+
