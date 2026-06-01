@@ -1,7 +1,9 @@
+```javascript
 import React, { useState } from 'react';
 import './BookingPage.css';
 
 const BookingPage = () => {
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -12,90 +14,201 @@ const BookingPage = () => {
     time: '',
     message: ''
   });
-  const [status, setStatus] = useState(''); // To display success/error messages
 
+  const [status, setStatus] = useState('');
+
+  // Handle input changes
   const handleChange = (e) => {
+
     const { name, value } = e.target;
-    setFormData(prevState => ({
+
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value
     }));
   };
 
+  // Handle form submit
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+
     setStatus('Submitting...');
 
     try {
-      const response = await fetch('https://btbuffalotaxi.com/api/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Something went wrong');
-      }
+      await fetch(
+        'https://script.google.com/macros/s/AKfycbx8gyVLOOQ0hta7KhdU5RmhLL0iOdzhe-_gJE7ckbGD-4SUDv2tCVEpRharXcXoFBUQCQ/exec',
+        {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-      const result = await response.json();
-      console.log('Booking successful:', result);
+      // Success message
       setStatus('Booking submitted successfully! We will contact you shortly.');
+
       // Reset form
       setFormData({
-        name: '', phone: '', email: '', pickup: '', destination: '', date: '', time: '', message: ''
+        name: '',
+        phone: '',
+        email: '',
+        pickup: '',
+        destination: '',
+        date: '',
+        time: '',
+        message: ''
       });
+
     } catch (error) {
+
       console.error('Submission error:', error);
-      setStatus(`Error: ${error.message}`);
+
+      setStatus('Error submitting booking. Please try again.');
+
     }
   };
 
   return (
     <div className="booking-page-container">
+
       <div className="booking-form-content">
+
         <h2>Book your cab now!</h2>
+
         <form onSubmit={handleSubmit}>
+
           <div className="form-group">
             <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
           </div>
+
           <div className="form-group">
             <label htmlFor="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} required />
+
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
           </div>
+
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
+
           <div className="form-group">
             <label htmlFor="pickup">Pickup Address</label>
-            <input type="text" id="pickup" name="pickup" value={formData.pickup} onChange={handleChange} required />
+
+            <input
+              type="text"
+              id="pickup"
+              name="pickup"
+              value={formData.pickup}
+              onChange={handleChange}
+              required
+            />
           </div>
+
           <div className="form-group">
             <label htmlFor="destination">Destination Address</label>
-            <input type="text" id="destination" name="destination" value={formData.destination} onChange={handleChange} required />
+
+            <input
+              type="text"
+              id="destination"
+              name="destination"
+              value={formData.destination}
+              onChange={handleChange}
+              required
+            />
           </div>
+
           <div className="form-group form-group-half">
             <label htmlFor="date">Date</label>
-            <input type="date" id="date" name="date" value={formData.date} onChange={handleChange} required />
+
+            <input
+              type="date"
+              id="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+            />
           </div>
+
           <div className="form-group form-group-half">
             <label htmlFor="time">Time</label>
-            <input type="time" id="time" name="time" value={formData.time} onChange={handleChange} required />
+
+            <input
+              type="time"
+              id="time"
+              name="time"
+              value={formData.time}
+              onChange={handleChange}
+              required
+            />
           </div>
+
           <div className="form-group">
             <label htmlFor="message">Message</label>
-            <textarea id="message" name="message" rows="3" value={formData.message} onChange={handleChange} placeholder="Optional: flight number, number of passengers, etc."></textarea>
+
+            <textarea
+              id="message"
+              name="message"
+              rows="3"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Optional: flight number, number of passengers, etc."
+            ></textarea>
           </div>
-          <button type="submit" className="btn-submit">Submit Booking</button>
+
+          <button
+            type="submit"
+            className="btn-submit"
+            disabled={status === 'Submitting...'}
+          >
+            {status === 'Submitting...'
+              ? 'Submitting...'
+              : 'Submit Booking'}
+          </button>
+
         </form>
-        {status && <p className="form-status">{status}</p>}
+
+        {status && (
+          <p className="form-status">
+            {status}
+          </p>
+        )}
+
       </div>
+
     </div>
   );
 };
 
-export default BookingPage; 
+export default BookingPage;
+```
